@@ -41,6 +41,37 @@ mmk youtube videotype <youtube-url>
 - `mmk paymint ...` — 사용 불가
 - `mmk threads ...` — 사용 불가
 
+## YouTube AI 콘텐츠 모니터링 자동화
+
+AI/자동화 관련 유튜브 채널을 모니터링하여 새 영상을 자동 요약하고 슬랙/노션에 전달하는 시스템입니다.
+
+### 커스텀 커맨드
+
+| 커맨드 | 설명 |
+|--------|------|
+| `/monitor` | 전체 파이프라인 실행 (새 영상 확인 → 자막 추출 → 요약 → 슬랙 알림 → 노션 저장) |
+| `/fetch-channels` | RSS 피드에서 새 영상 목록만 확인 |
+| `/summarize-video <url>` | 단일 영상 자막 추출 및 요약 |
+| `/notify-slack` | 슬랙 #정보받기 채널에 알림 발송 |
+| `/save-notion` | 노션 DB에 영상 데이터 저장 |
+
+### 스케줄 자동화
+
+```
+/loop 1h /monitor
+```
+1시간마다 `/monitor`를 자동 실행합니다.
+
+### 설정 파일
+
+- `config/channels.json` — 모니터링 채널, 키워드, 슬랙/노션 설정
+- `data/processed_videos.json` — 처리된 영상 기록 (자동 생성, gitignore)
+
+### 연동 서비스
+
+- **슬랙**: #정보받기 채널 (MCP)
+- **노션**: "YouTube AI 콘텐츠 요약" DB (MCP)
+
 ## 세션 시작 시
 
 세션이 시작되면 `.claude/scripts/check-env.sh` 스크립트가 자동 실행되어 환경 정보를 출력합니다:
